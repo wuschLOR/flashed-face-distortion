@@ -6,14 +6,21 @@ function [ finalMsg ] = runFaceDistortion ( vpNummer , outputFileStr , buttonBox
 %  if ~exist(buttonBoxON , 'var');  buttonBoxON = false;     endif
 %  if ~exist(debugEnabled, 'var');  debugEnabled = true;     endif
 
-if ( nargin <4 || isempty(vpNummer) || isempty(outputFileStr) || isempty(buttonBoxON) || isempty(debugEnabled) )
-  if ( ~exist('vpNummer'      , 'var') || isempty(vpNummer)      );  vpNummer      = 001;     endif
-  if ( ~exist('outputFileStr' , 'var') || isempty(outputFileStr) );  outputFileStr = 'xkcd';  endif
-  if ( ~exist('buttonBoxON'   , 'var') || isempty(buttonBoxON)   );  buttonBoxON   = false;   endif
-  if ( ~exist('debugEnabled'  , 'var') || isempty(debugEnabled)  );  debugEnabled  = true;    endif
+% initialisieren der fehlenden Variablen
+if nargin <4
+  if ~exist('vpNummer'      , 'var') ;  vpNummer      = []; endif
+  if ~exist('outputFileStr' , 'var') ;  outputFileStr = []; endif
+  if ~exist('buttonBoxON'   , 'var') ;  buttonBoxON   = []; endif
+  if ~exist('debugEnabled'  , 'var') ;  debugEnabled  = []; endif
 endif
 
-%%  [ finalMsg ] = faceDistortion ( vpNummer=[001] , debugEnabled=[] )
+% default werte initialisieren
+ if isempty(vpNummer)      ;  vpNummer      = 001    ; endif
+ if isempty(outputFileStr) ;  outputFileStr = 'xkcd' ; endif
+ if isempty(buttonBoxON)   ;  buttonBoxON   = false  ; endif
+ if isempty(debugEnabled)  ;  debugEnabled  = true   ; endif
+
+%%  [ finalMsg ] = runFaceDistortion ( vpNummer , outputFileStr , buttonBoxON, debugEnabled )
 %  Input:
 %    vpNummer      = Number of the participant.
 %                  IMPRTANT this must be a number, because the random seed is
@@ -58,7 +65,7 @@ endif
 %	3	%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  History
-%  2014-05-26 mg  written
+%  2014-05-XX mg  written
 %  ----------------------------------------------------------------------------
 
 
@@ -143,6 +150,8 @@ ListenChar(2)
 %  dead, press CTRL+C to reenable keyboard input -- It is the same as
 %  ListenChar(0). See 'help ListenChar' for more info.
 
+
+
 %  --------------------------------------------------------------------------  %
 %% Tasten festlegen
 
@@ -169,18 +178,18 @@ newTextColor= [00 00 00];
 %%  screen innizialisieren
 
 screenNumbers=Screen('Screens');
-ScreenID = max(screenNumbers); % benutzt den Bildschirm mit der höchsten ID
-%  ScreenID = 1; %benutzt den Bildschirm 1 bei Bedarf ändern
+screenID = max(screenNumbers); % benutzt den Bildschirm mit der höchsten ID
+%  screenID = 1; %benutzt den Bildschirm 1 bei Bedarf ändern
 
 %  öffnet den Screen 
 %  windowPtr = spezifikation des Screens die später zum ansteueren verwendet wird
 %  rect hat wenn es ohne attribute initiert wird die größe des Bildschirms
 %  also: von 0,0 oben links zu 1600, 900 unten rechts 
 
-  [windowPtr,rect] = Screen('OpenWindow', ScreenID ,[], [50 50 650 650]);
-%  [windowPtr,rect] = Screen('OpenWindow', ScreenID ,[], [0 0 1280 800]);
-%   [windowPtr,rect] = Screen('OpenWindow', ScreenID ,[], [1 1 1279 799]);
-%  [windowPtr,rect] = Screen('OpenWindow', ScreenID );
+  [windowPtr,rect] = Screen('OpenWindow', screenID ,[], [50 50 650 650]);
+%  [windowPtr,rect] = Screen('OpenWindow', screenID ,[], [0 0 1280 800]);
+%   [windowPtr,rect] = Screen('OpenWindow', screenID ,[], [1 1 1279 799]);
+%  [windowPtr,rect] = Screen('OpenWindow', screenID );
 
 % Screen('BlendFunction', windowPtr, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); original
 % Screen('BlendFunction', windowPtr, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
@@ -188,6 +197,7 @@ ScreenID = max(screenNumbers); % benutzt den Bildschirm mit der höchsten ID
 [sourceFactorOld, destinationFactorOld]=Screen('BlendFunction', windowPtr, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
 Screen('BlendFunction', windowPtr, sourceFactorOld, destinationFactorOld)
 
+HideCursor(screenID)
 flipSlack =Screen('GetFlipInterval', windowPtr)
 %  flipSlack =0
 flipSlack = flipSlack/2 % das verhindert das das ganze kürzer wird hier noch etwas rumspielen - da es so manchmal zu kurze anzeigezeiten kommen kann 
