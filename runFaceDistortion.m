@@ -1,24 +1,21 @@
 %function [ finalMsg ] = runFaceDistortion ( vpNummer=[001] , outputFileStr = [] , buttonBoxON=[false], debugEnabled=[true] )
 
 function [ finalMsg ] = runFaceDistortion ( vpNummer , outputFileStr , buttonBoxON, debugEnabled )
-%  if ~exist(vpNummer , 'var');     vpNummer = 001;          endif
-%  if ~exist(outputFileStr, 'var'); outputFileStr = 'empty'; endif
-%  if ~exist(buttonBoxON , 'var');  buttonBoxON = false;     endif
-%  if ~exist(debugEnabled, 'var');  debugEnabled = true;     endif
+
 
 % initialisieren der fehlenden Variablen
 if nargin <4
-  if ~exist('vpNummer'      , 'var') ;  vpNummer      = []; endif
-  if ~exist('outputFileStr' , 'var') ;  outputFileStr = []; endif
-  if ~exist('buttonBoxON'   , 'var') ;  buttonBoxON   = []; endif
-  if ~exist('debugEnabled'  , 'var') ;  debugEnabled  = []; endif
-endif
+  if ~exist('vpNummer'      , 'var') ;  vpNummer      = []; end%if
+  if ~exist('outputFileStr' , 'var') ;  outputFileStr = []; end%if
+  if ~exist('buttonBoxON'   , 'var') ;  buttonBoxON   = []; end%if
+  if ~exist('debugEnabled'  , 'var') ;  debugEnabled  = []; end%if
+end%if
 
 % default werte initialisieren
- if isempty(vpNummer)      ;  vpNummer      = 001    ; endif
- if isempty(outputFileStr) ;  outputFileStr = 'xkcd' ; endif
- if isempty(buttonBoxON)   ;  buttonBoxON   = false  ; endif
- if isempty(debugEnabled)  ;  debugEnabled  = true   ; endif
+ if isempty(vpNummer)      ;  vpNummer      = 001    ; end%if
+ if isempty(outputFileStr) ;  outputFileStr = 'xkcd' ; end%if
+ if isempty(buttonBoxON)   ;  buttonBoxON   = false  ; end%if
+ if isempty(debugEnabled)  ;  debugEnabled  = true   ; end%if
 
 %%  [ finalMsg ] = runFaceDistortion ( vpNummer , outputFileStr , buttonBoxON, debugEnabled )
 %  Input:
@@ -87,7 +84,7 @@ switch debugEnabled
         
   case false
     debugLvl = 'butter' % debug is false
-endswitch
+end%switch
 
 switch debugLvl
   case 'butter'
@@ -120,7 +117,7 @@ switch debugLvl
 
     vpNummerStr = num2str( strftime( '%Y%m%d%H%M%S' ,localtime (time () ) ) );
     
-endswitch
+end%switch
 
 %% Generating the outputpaths
 resultsFolder    = ['.' filesep 'results' filesep]
@@ -306,26 +303,26 @@ blockInstructionInfo  = getImgFolder( 'tex instructions' , 'png' );
     % rechnet aus wie viel Durchläufe passieren werden (kann die angegebene zeit überschreiten da die Priorität auf die anzeige aller Stimuli liegt da die Präsentation eines halben Satzes doof wäre)
     infotainment(windowPtr, 'rand')
     [blockDef(i).texColumRand , nextSeed ] = randomizeColMatrix( blockDef(i).texColum , nextSeed , multi , false , false );
-  endfor
+  end%for
 %  das entsprechende Rating zur Bedingung hinzufügen
   for i=1:o
       blockDef(i).texRating = blockRatingTex(i);
-  endfor
+  end%for
 % instructions 
   for i=1:o
       blockDef(i).texInstructions = blockInstructionTex(i);
-  endfor
+  end%for
   vorlaufsZeit = 5;
   for i=1:o
       blockDef(i).vorlaufsZeit = vorlaufsZeit;
-  endfor
+  end%for
 
 % Blöcke insgesammt randomisieren
   rand('state' , nextSeed)
   newSequence = randperm( length(blockDef) );
   for i=1:o
       blockDefRand(:,:) = blockDef(newSequence);
-  endfor
+  end%for
 
 %  --------------------------------------------------------------------------  %
 %% Positionen
@@ -405,21 +402,21 @@ for j=1:o % für alle definierten Blöcke
     % abspeichern
     blockDefRand(j).finRectLeft(i,1) = {finRectLeft};
     blockDefRand(j).finRectRight(i,2)= {finRectRight};
-  endfor
+  end%for
   
-endfor
+end%for
 
 for j=1:o
   texRating  = Screen('Rect' , blockRatingTex(j) );
   finRectRating = putRectInRect (rectImgRating , texRating);
   blockDefRand(j).finRectRating = {finRectRating};
-endfor
+end%for
 
 for j=1:o
   texInstructions  = Screen('Rect' , blockDefRand(j).texInstructions );
   finRectInstructions = putRectInRect (rectImgInstruction , texInstructions);
   blockDefRand(j).finRectInstructions = {finRectInstructions};
-endfor
+end%for
 
 %  --------------------------------------------------------------------------  %
 %% BLÖCKE
@@ -457,7 +454,7 @@ for j=1:o  % für alle definierten Blöcke
     [empty, empty , lastFlip ] =Screen('Flip', windowPtr , nextFlip)
     nextFlip = lastFlip + blockDefRand(j).presentationTime - flipSlack
 
-  endfor
+  end%for
   
   [empty,empty,timeBlockEnd ]=Screen('Flip', windowPtr , nextFlip)
   timeBlockTicToc = toc
@@ -480,7 +477,7 @@ for j=1:o  % für alle definierten Blöcke
       % i should think about something
     otherwise
       % critical error - this should not happen
-  endswitch
+  end%switch
 
 %    dem outputfile werte zuweisen
   headings        = { ...
@@ -508,7 +505,7 @@ for j=1:o  % für alle definierten Blöcke
   outputCellFin= [headings ; outputCell]
   %  speicherndes output files
   cell2csv ( fileNameOutput , outputCellFin, ';')
-endfor
+end%for
 
 %  und hier ist es vorbei
 
