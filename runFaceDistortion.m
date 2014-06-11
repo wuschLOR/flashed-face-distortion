@@ -1,35 +1,46 @@
-%function [ finalMsg ] = runFaceDistortion ( vpNummer=[001] , outputFileStr = [] , buttonBoxON=[false], debugEnabled=[true] )
-
 function [ finalMsg ] = runFaceDistortion ( vpNummer , outputFileStr , buttonBoxON, debugEnabled )
 
 
 % initialisieren der fehlenden Variablen
 if nargin <4
-  if ~exist('vpNummer'      , 'var') ;  vpNummer      = []; end%if
-  if ~exist('outputFileStr' , 'var') ;  outputFileStr = []; end%if
-  if ~exist('buttonBoxON'   , 'var') ;  buttonBoxON   = []; end%if
-  if ~exist('debugEnabled'  , 'var') ;  debugEnabled  = []; end%if
-end%if
+  if ~exist('vpNummer'      , 'var') ;  vpNummer      = []; endif
+  if ~exist('outputFileStr' , 'var') ;  outputFileStr = []; endif
+  if ~exist('buttonBoxON'   , 'var') ;  buttonBoxON   = []; endif
+  if ~exist('debugEnabled'  , 'var') ;  debugEnabled  = []; endif
+endif
 
 % default werte initialisieren
- if isempty(vpNummer)      ;  vpNummer      = 001    ; end%if
- if isempty(outputFileStr) ;  outputFileStr = 'xkcd' ; end%if
- if isempty(buttonBoxON)   ;  buttonBoxON   = false  ; end%if
- if isempty(debugEnabled)  ;  debugEnabled  = true   ; end%if
+ if isempty(vpNummer)      ;  vpNummer      = 001    ; endif
+ if isempty(outputFileStr) ;  outputFileStr = 'xkcd' ; endif
+ if isempty(buttonBoxON)   ;  buttonBoxON   = false  ; endif
+ if isempty(debugEnabled)  ;  debugEnabled  = false  ; endif
 
 %%  [ finalMsg ] = runFaceDistortion ( vpNummer , outputFileStr , buttonBoxON, debugEnabled )
+%  ----------------------------------------------------------------------------
 %  Input:
-%    vpNummer      = Number of the participant.
-%                  IMPRTANT this must be a number, because the random seed is
-%                  generated with this variable. If something else is put in
-%                  here its put to 001.
-%    outputFileStr = String variable that is added to the outputfile name
-%                  e.g. [experimentName 001 outputFileStr]
-%    debugEnabled  = true or false
 %
+%    vpNummer      = 001 (default)
+%        Number of the participant. IMPRTANT this must be a number, because the
+%        random seed is generated with this variable.
+%
+%    outputFileStr = 'xkcd' (default)
+%        String variable that is added to the outputfile name
+%        e.g. [experimentName 001 outputFileStr]
+%
+%    buttonBoxON   = false (default)
+%        false == use the keyboard to get the rating input
+%        true  == use a buttonbox
+%
+%    debugEnabled  = false (default)
+%        false == 
+%        true  ==
+%
+%  ----------------------------------------------------------------------------
 %  Output:
-%    finalMsg      = custom message with no purpose but it will be nice.
-%                                                                     I promise!
+%
+%    finalMsg = custom message with no purpose but it will be nice.   I promise!
+%
+%  ----------------------------------------------------------------------------
 %  Function
 %  This scrip is creating the face distortion effect with a rating afterwards.
 %  A example of this can be found here:
@@ -61,18 +72,26 @@ end%if
 %		%% %%%%%%%%%%%%%%%%%%%%% %%
 %	3	%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+%  ----------------------------------------------------------------------------
+%  Requirements
+%    Psychtoolbox-3  https://psychtoolbox-3.github.io/overview/
+%    awesomeStuff    https://github.com/wuschLOR/awesomeStuff
+%
+%  ----------------------------------------------------------------------------
 %  History
-%  2014-05-XX mg  written
+%  2014-06-11 mg  written
 %  ----------------------------------------------------------------------------
 
 
 %  --------------------------------------------------------------------------  %
 %%  openGL
 %  This script calls Psychtoolbox commands available only in OpenGL-based
-%  versions of the Psychtoolbox. The Psychtoolbox command AssertPsychOpenGL will issue
-%  an error message if someone tries to execute this script on a computer without
-%  an OpenGL Psychtoolbox
+%  versions of the Psychtoolbox. The Psychtoolbox command AssertPsychOpenGL will
+%  issue an error message if someone tries to execute this script on a computer
+%  without an OpenGL Psychtoolbox
+
 AssertOpenGL;
+
 %  --------------------------------------------------------------------------  %
 %% debug
 %  generell ist der default dass debug aus ist. sobald irgendetwas als die debuginformation angegeben wird wir debug angeworfen
@@ -84,7 +103,7 @@ switch debugEnabled
         
   case false
     debugLvl = 'butter' % debug is false
-end%switch
+endswitch
 
 switch debugLvl
   case 'butter'
@@ -117,7 +136,7 @@ switch debugLvl
 
     vpNummerStr = num2str( strftime( '%Y%m%d%H%M%S' ,localtime (time () ) ) );
     
-end%switch
+endswitch
 
 %% Generating the outputpaths
 resultsFolder    = ['.' filesep 'results' filesep]
@@ -294,7 +313,7 @@ blockInstructionInfo  = getImgFolder( 'tex instructions' , 'png' );
 
   o = length(blockDef);
 
-  % hier muss noch die berechnung des multiplikators rein 
+  % hier muss noch die Berechnung des Multiplikators rein
 %  Stimuli randomisieren
   for i=1:o
     multi = dauer / blockDef(i).presentationTime;
@@ -302,26 +321,27 @@ blockInstructionInfo  = getImgFolder( 'tex instructions' , 'png' );
     multi = ceil( multi )
     % rechnet aus wie viel Durchläufe passieren werden (kann die angegebene zeit überschreiten da die Priorität auf die anzeige aller Stimuli liegt da die Präsentation eines halben Satzes doof wäre)
     [blockDef(i).texColumRand , nextSeed ] = randomizeColMatrix( blockDef(i).texColum , nextSeed , multi , false , false );
-  end%for
+  endfor
 %  das entsprechende Rating zur Bedingung hinzufügen
   for i=1:o
       blockDef(i).texRating = blockRatingTex(i);
-  end%for
+  endfor
 % instructions 
   for i=1:o
       blockDef(i).texInstructions = blockInstructionTex(i);
-  end%for
-  vorlaufsZeit = 5;
+  endfor
+% wie lang wird das Kreuz vor einsetzen der Stimuli angezeigt
+  vorlaufsZeit = 2; % vorlaufsZeit für alle Blöcke auf 2 Sekunden setzen
   for i=1:o
       blockDef(i).vorlaufsZeit = vorlaufsZeit;
-  end%for
+  endfor
 
 % Blöcke insgesammt randomisieren
   rand('state' , nextSeed)
   newSequence = randperm( length(blockDef) );
   for i=1:o
       blockDefRand(:,:) = blockDef(newSequence);
-  end%for
+  endfor
 
 %  --------------------------------------------------------------------------  %
 %% Positionen
@@ -401,21 +421,21 @@ for j=1:o % für alle definierten Blöcke
     % abspeichern
     blockDefRand(j).finRectLeft(i,1) = {finRectLeft};
     blockDefRand(j).finRectRight(i,2)= {finRectRight};
-  end%for
+  endfor
   
-end%for
+endfor
 
 for j=1:o
   texRating  = Screen('Rect' , blockRatingTex(j) );
   finRectRating = putRectInRect (rectImgRating , texRating);
   blockDefRand(j).finRectRating = {finRectRating};
-end%for
+endfor
 
 for j=1:o
   texInstructions  = Screen('Rect' , blockDefRand(j).texInstructions );
   finRectInstructions = putRectInRect (rectImgInstruction , texInstructions);
   blockDefRand(j).finRectInstructions = {finRectInstructions};
-end%for
+endfor
 
 %  --------------------------------------------------------------------------  %
 %% BLÖCKE
@@ -432,13 +452,18 @@ for j=1:o  % für alle definierten Blöcke
   [empty, empty , timeBlockBegin ]=Screen('Flip', windowPtr);
   
   nextFlip =0
-  drawFixCross (windowPtr , [18 18 18] , x.center , y.center , 80 , 3 );
+  drawFixCross (windowPtr , [18 18 18] , x.center , y.center , 80 , 2 );
+
+  tic
   [empty,empty,crossFlip ]=Screen('Flip', windowPtr , nextFlip);
   nextFlip = crossFlip + blockDefRand(j).vorlaufsZeit;
   
-  tic
+
   for i = 1:m
 
+#     Screen('FrameRect', windowPtr , [255 20 147] , rectImgLeft  );
+#     Screen('FrameRect', windowPtr , [255 20 147] , rectImgRight );
+  
     %  malen den textur + umstellen der blende und zurückstellen der blende
     Screen('BlendFunction', windowPtr, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
     Screen('DrawTexture', windowPtr, blockDefRand(j).texColumRand(i,1) , [] , blockDefRand(j).finRectLeft(i,1){} );
@@ -446,14 +471,12 @@ for j=1:o  % für alle definierten Blöcke
     Screen('BlendFunction', windowPtr, sourceFactorOld, destinationFactorOld);
 
     %  Fixationskreuz
-    drawFixCross (windowPtr , [18 18 18] , x.center , y.center , 80 , 3 );
-
-    Screen('FrameRect', windowPtr , [255 20 147] , rectImgLeft  );
-    Screen('FrameRect', windowPtr , [255 20 147] , rectImgRight );
+    drawFixCross (windowPtr , [18 18 18] , x.center , y.center , 80 , 2 );
+    
     [empty, empty , lastFlip ] =Screen('Flip', windowPtr , nextFlip)
     nextFlip = lastFlip + blockDefRand(j).presentationTime - flipSlack
 
-  end%for
+  endfor
   
   [empty,empty,timeBlockEnd ]=Screen('Flip', windowPtr , nextFlip)
   timeBlockTicToc = toc
@@ -476,7 +499,7 @@ for j=1:o  % für alle definierten Blöcke
       % i should think about something
     otherwise
       % critical error - this should not happen
-  end%switch
+  endswitch
 
 %    dem outputfile werte zuweisen
   headings        = { ...
@@ -504,7 +527,7 @@ for j=1:o  % für alle definierten Blöcke
   outputCellFin= [headings ; outputCell]
   %  speicherndes output files
   cell2csv ( fileNameOutput , outputCellFin, ';')
-end%for
+endfor
 
 %  und hier ist es vorbei
 
