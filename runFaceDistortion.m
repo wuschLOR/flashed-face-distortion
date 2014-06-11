@@ -301,7 +301,6 @@ blockInstructionInfo  = getImgFolder( 'tex instructions' , 'png' );
     multi = multi / length(blockDef(i).texColum);
     multi = ceil( multi )
     % rechnet aus wie viel Durchläufe passieren werden (kann die angegebene zeit überschreiten da die Priorität auf die anzeige aller Stimuli liegt da die Präsentation eines halben Satzes doof wäre)
-    infotainment(windowPtr, 'rand')
     [blockDef(i).texColumRand , nextSeed ] = randomizeColMatrix( blockDef(i).texColum , nextSeed , multi , false , false );
   end%for
 %  das entsprechende Rating zur Bedingung hinzufügen
