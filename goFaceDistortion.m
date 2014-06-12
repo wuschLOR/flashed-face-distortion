@@ -186,10 +186,6 @@ newTextSize = 20;
 newTextColor= [00 00 00];
 
 
-%
-%% Ordner für ergebnisse festlegen
-
-
 %  --------------------------------------------------------------------------  %
 %%  screen innizialisieren
 
@@ -313,7 +309,6 @@ blockInstructionInfo  = getImgFolder( 'tex instructions' , 'png' );
 
   o = length(blockDef);
 
-  % hier muss noch die Berechnung des Multiplikators rein
 %  Stimuli randomisieren
   for i=1:o
     multi = dauer / blockDef(i).presentationTime;
@@ -331,9 +326,9 @@ blockInstructionInfo  = getImgFolder( 'tex instructions' , 'png' );
       blockDef(i).texInstructions = blockInstructionTex(i);
   endfor
 % wie lang wird das Kreuz vor einsetzen der Stimuli angezeigt
-  vorlaufsZeit = 2; % vorlaufsZeit für alle Blöcke auf 2 Sekunden setzen
+  zeit.fixcross = 2; % zeit.fixcross für alle Blöcke auf 2 Sekunden setzen
   for i=1:o
-      blockDef(i).vorlaufsZeit = vorlaufsZeit;
+      blockDef(i).timeFixcross = zeit.fixcross;
   endfor
 
 % Blöcke insgesammt randomisieren
@@ -456,7 +451,7 @@ for j=1:o  % für alle definierten Blöcke
 
   tic
   [empty,empty,crossFlip ]=Screen('Flip', windowPtr , nextFlip);
-  nextFlip = crossFlip + blockDefRand(j).vorlaufsZeit;
+  nextFlip = crossFlip + blockDefRand(j).timeFixcross;
   
 
   for i = 1:m
@@ -557,4 +552,4 @@ Screen('closeall')
 
 finalMsg = 'geschafft'
 
-
+endfunction
