@@ -206,8 +206,8 @@ screenID = max(screenNumbers); % benutzt den Bildschirm mit der höchsten ID
 % Screen('BlendFunction', windowPtr, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); original
 % Screen('BlendFunction', windowPtr, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
 %  das hatte was mit dem transparenten hintergund zu tun - keine ahnung was das wirklich macht
-[sourceFactorOld, destinationFactorOld]=Screen('BlendFunction', windowPtr, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-Screen('BlendFunction', windowPtr, sourceFactorOld, destinationFactorOld)
+# [sourceFactorOld, destinationFactorOld]=Screen('BlendFunction', windowPtr, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+# Screen('BlendFunction', windowPtr, sourceFactorOld, destinationFactorOld)
 
 HideCursor(screenID)
 flipSlack =Screen('GetFlipInterval', windowPtr)
@@ -460,10 +460,10 @@ for j=1:o  % für alle definierten Blöcke
 #     Screen('FrameRect', windowPtr , [255 20 147] , rectImgRight );
   
     %  malen den textur + umstellen der blende und zurückstellen der blende
-    Screen('BlendFunction', windowPtr, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+#     Screen('BlendFunction', windowPtr, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
     Screen('DrawTexture', windowPtr, blockDefRand(j).texColumRand(i,1) , [] , blockDefRand(j).finRectLeft(i,1){} );
     Screen('DrawTexture', windowPtr, blockDefRand(j).texColumRand(i,2) , [] , blockDefRand(j).finRectRight(i,2){} );
-    Screen('BlendFunction', windowPtr, sourceFactorOld, destinationFactorOld);
+#     Screen('BlendFunction', windowPtr, sourceFactorOld, destinationFactorOld);
 
     %  Fixationskreuz
     drawFixCross (windowPtr , [18 18 18] , x.center , y.center , 80 , 2 );
