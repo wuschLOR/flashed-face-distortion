@@ -477,7 +477,7 @@ for j=1:o  % für alle definierten Blöcke
   timeBlockTicToc = toc
 
   %  Blende wieder zurückstellen
-  Screen('BlendFunction', windowPtr, sourceFactorOld, destinationFactorOld)
+#   Screen('BlendFunction', windowPtr, sourceFactorOld, destinationFactorOld)
 
   % Rating anzeigen
   switch buttonBoxON
