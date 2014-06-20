@@ -198,10 +198,10 @@ screenID = max(screenNumbers); % benutzt den Bildschirm mit der höchsten ID
 %  rect hat wenn es ohne attribute initiert wird die größe des Bildschirms
 %  also: von 0,0 oben links zu 1600, 900 unten rechts 
 
-#   [windowPtr,rect] = Screen('OpenWindow', screenID ,[], [50 50 650 650]);
+  [windowPtr,rect] = Screen('OpenWindow', screenID ,[], [50 50 650 650]);
 %  [windowPtr,rect] = Screen('OpenWindow', screenID ,[], [0 0 1280 800]);
 %   [windowPtr,rect] = Screen('OpenWindow', screenID ,[], [1 1 1279 799]);
-  [windowPtr,rect] = Screen('OpenWindow', screenID );
+#   [windowPtr,rect] = Screen('OpenWindow', screenID );
 
 % Screen('BlendFunction', windowPtr, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); original
 % Screen('BlendFunction', windowPtr, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
@@ -230,6 +230,7 @@ blockInstructionInfo  = getImgFolder( 'tex instructions' , 'png' );
 
 
   stimImgType ='png'
+  stim00Info = getImgFolder( 'stim00' , stimImgType );
   stim01Info = getImgFolder( 'stim01' , stimImgType );
   stim02Info = getImgFolder( 'stim02' , stimImgType );
   stim03Info = getImgFolder( 'stim03' , stimImgType );
@@ -238,7 +239,6 @@ blockInstructionInfo  = getImgFolder( 'tex instructions' , 'png' );
   stim06Info = getImgFolder( 'stim06' , stimImgType );
   stim07Info = getImgFolder( 'stim07' , stimImgType );
   stim08Info = getImgFolder( 'stim08' , stimImgType );
-  stimEmpty  = getImgFolder( 'stimEmpty' ,  stimImgType);
 
 
 
@@ -249,6 +249,7 @@ blockInstructionInfo  = getImgFolder( 'tex instructions' , 'png' );
   blockRatingTex      = makeTex(windowPtr, blockRatingInfo      , 'tex rating');
   blockInstructionTex = makeTex(windowPtr, blockInstructionInfo , 'tex instructions');
 
+  stim00Tex =  makeTex(windowPtr , stim00Info , 'stim00');
   stim01Tex =  makeTex(windowPtr , stim01Info , 'stim01');
   stim02Tex =  makeTex(windowPtr , stim02Info , 'stim02');
   stim03Tex =  makeTex(windowPtr , stim03Info , 'stim03');
@@ -257,7 +258,7 @@ blockInstructionInfo  = getImgFolder( 'tex instructions' , 'png' );
   stim06Tex =  makeTex(windowPtr , stim06Info , 'stim06');
   stim07Tex =  makeTex(windowPtr , stim07Info , 'stim07');
   stim08Tex =  makeTex(windowPtr , stim08Info , 'stim08');
-  stim00Tex =  makeTex(windowPtr , stimEmpty  , 'stimEmpty');
+
 
 
 %  --------------------------------------------------------------------------  %
