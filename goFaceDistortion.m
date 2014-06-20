@@ -198,10 +198,10 @@ screenID = max(screenNumbers); % benutzt den Bildschirm mit der höchsten ID
 %  rect hat wenn es ohne attribute initiert wird die größe des Bildschirms
 %  also: von 0,0 oben links zu 1600, 900 unten rechts 
 
-  [windowPtr,rect] = Screen('OpenWindow', screenID ,[], [50 50 650 650]);
+#   [windowPtr,rect] = Screen('OpenWindow', screenID ,[], [50 50 650 650]);
 %  [windowPtr,rect] = Screen('OpenWindow', screenID ,[], [0 0 1280 800]);
 %   [windowPtr,rect] = Screen('OpenWindow', screenID ,[], [1 1 1279 799]);
-#   [windowPtr,rect] = Screen('OpenWindow', screenID );
+  [windowPtr,rect] = Screen('OpenWindow', screenID );
 
 % Screen('BlendFunction', windowPtr, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); original
 % Screen('BlendFunction', windowPtr, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
