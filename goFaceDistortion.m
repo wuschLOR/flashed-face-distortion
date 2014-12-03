@@ -79,6 +79,8 @@ endif
 %
 %  ----------------------------------------------------------------------------
 %  History
+%  2014-12-03 mg  csv2cell now with ','; maltlab workspacke now to -binary; 
+%                 first defined block is now fix at the beginning
 %  2014-06-18 mg  written
 %  ----------------------------------------------------------------------------
 
@@ -504,13 +506,13 @@ for j=1:o  % für alle definierten Blöcke
 %    dem outputfile werte zuweisen
   headings        = { ...
     'vpNummer' , ...
-    'BunusString' , ...
-    'Index' , ...
-    'Block' , ...
-    'KeyString' , ...
-    'KeyValue'  , ...
-    'ReaktionszeitBlockStart' , ...
-    'ReaktionszeitBlockEnd' , ...
+    'bunusString' , ...
+    'index' , ...
+    'block' , ...
+    'keyString' , ...
+    'keyValue'  , ...
+    'reaktionszeitBlockStart' , ...
+    'reaktionszeitBlockEnd' , ...
     'tic toc (sec)'   }
 
   outputCell(j,:) = {...
@@ -526,7 +528,7 @@ for j=1:o  % für alle definierten Blöcke
   % attatch names to the outputCell
   outputCellFin= [headings ; outputCell]
   %  speicherndes output files
-  cell2csv ( fileNameOutput , outputCellFin, ';')
+  cell2csv ( fileNameOutput , outputCellFin, ',')
 endfor
 
 %  und hier ist es vorbei
@@ -534,20 +536,20 @@ endfor
 %  --------------------------------------------------------------------------  %
 %%  Data saving
 
-infotainment(windowPtr , 'saving your data')
 
 %  den workspace sichern (zur fehlersuche usw)
-save (fileNameBackupWorkspace)
+save ('-binary',fileNameBackupWorkspace)
 
 % attatch names to the outputCell
 outputCellFin= [headings ; outputCell]
 
 %  speicherndes output files 
-cell2csv ( fileNameOutput , outputCellFin, ';')
+cell2csv ( fileNameOutput , outputCellFin, ',')
 
 
 diary off
 
+infotainment(windowPtr , 'saving your data')
 %  --------------------------------------------------------------------------  %
 %%  end all processes
 infotainment(windowPtr , 'target aquired for termination')
