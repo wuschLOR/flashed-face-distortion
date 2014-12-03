@@ -333,8 +333,12 @@ blockInstructionInfo  = getImgFolder( 'tex instructions' , 'png' );
   endfor
 
 % Blöcke insgesammt randomisieren
-  rand('state' , nextSeed)
-  newSequence = randperm( length(blockDef) );
+% fixblock ist die anzahl der fixen blöcke (wird von blockDef an verarbeitet)
+  rand('state' , nextSeed);
+  fixblocks = 1; %<--- hier die zahl ändern wenn mehrere fix angesprochen werden sollen
+  randblocks = 1+fixblocks:length(blockDef);
+  randblocks = randblocks(:,randperm(length(randblocks)));
+  newSequence = [1:fixblocks randblocks];
   for i=1:o
       blockDefRand(:,:) = blockDef(newSequence);
   endfor
